@@ -8,6 +8,12 @@ const xss = require('xss-clean')
 const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
+const AppError = require('./utils/AppError.js')
+const errorHandler = require('./controllers/errorController')
+
+process.on('uncaughtException', (err) => {
+    console.log('Uncaught exception: ', err.message)
+})
 
 const app = express()
 
@@ -31,6 +37,10 @@ app.use(express.json())
 app.use(mongoSanitize())
 app.use(xss())
 
+app.all('*', (req, res, next) => {
+    next(new AppError(`The path ${req.originalUrl} does not exist`, 404))
+})
+
 
 //Database
 const DB = process.env.DB
@@ -43,7 +53,15 @@ mongoose.connect(DB)
 //Server
 const PORT = process.env.PORT || 3000
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}...`)
 })
 
+
+//Global error handler
+app.use(errorHandler)
+
+process.on('unhandledRejection', (err) => {
+    console.log('Unhandled rejection: ', err.message)
+    server.close(() => process.exit(1))
+})
