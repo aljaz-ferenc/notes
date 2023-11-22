@@ -20,3 +20,19 @@ exports.createNote = async (req, res, next) => {
         })
     }
 }
+
+exports.getAllNotes = async (req, res, next) => {
+    try{
+        const notes = await Note.find()
+        
+        res.status(200).json({
+            status: 'success',
+            data: notes
+        })
+    }catch(err){
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not find notes'
+        })
+    }
+}
