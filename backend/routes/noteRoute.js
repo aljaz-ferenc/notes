@@ -8,4 +8,6 @@ router.route('/')
     .post(authController.verifyUser, noteController.createNote)
     .get(authController.verifyUser, authController.restrictTo('admin'), noteController.getAllNotes)
     
+router.route('/:noteId')
+    .patch(authController.verifyUser, noteController.updateNote)
 module.exports = router

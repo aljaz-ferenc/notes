@@ -36,3 +36,24 @@ exports.getAllNotes = async (req, res, next) => {
         })
     }
 }
+
+exports.updateNote = async (req, res, next) => {
+    const {noteId} = req.params
+    const updatedFields = req.body
+    console.log(updatedFields)
+    try{
+        const note = await Note.findByIdAndUpdate(noteId, {...updatedFields}, {new: true})
+        if(!note) return next(new AppError('This note doesn\'t exist'))
+
+        res.status(201).json({
+            status: 'success',
+            data: note
+        })
+
+    }catch(err){
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not update note'
+        })
+    }
+}
