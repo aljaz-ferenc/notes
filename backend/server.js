@@ -10,6 +10,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const AppError = require('./utils/AppError.js')
 const errorHandler = require('./controllers/errorController')
+const userRouter = require('./routes/userRoute.js')
 
 process.on('uncaughtException', (err) => {
     console.log('Uncaught exception: ', err.message)
@@ -36,6 +37,10 @@ app.use('/api', limiter)
 app.use(express.json())
 app.use(mongoSanitize())
 app.use(xss())
+
+
+//Routes
+app.use('/api/v1/users', userRouter)
 
 app.all('*', (req, res, next) => {
     next(new AppError(`The path ${req.originalUrl} does not exist`, 404))
