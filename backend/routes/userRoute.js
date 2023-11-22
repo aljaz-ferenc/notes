@@ -5,7 +5,7 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 
 router.route('/')
-    .get(authController.verifyUser, userController.getAllUsers)
+    .get(authController.verifyUser, authController.restrictTo('admin'), userController.getAllUsers)
     .post(userController.createUser)
 
 router.route('/:userId')

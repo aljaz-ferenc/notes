@@ -5,14 +5,14 @@ const blacklistedTokens = require('../blacklistedTokens')
 
 exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body
-    
-    try{
-        const user = await User.findOne({email}).select('+password')
-        if(!user) return next(new AppError('User with this email doesn\'t exist'))
+
+    try {
+        const user = await User.findOne({ email }).select('+password')
+        if (!user) return next(new AppError('User with this email doesn\'t exist'))
 
         const passwordIsValid = await user.validatePassword(password)
 
-        if(!passwordIsValid) return next(new AppError('Invalid password', 401))
+        if (!passwordIsValid) return next(new AppError('Invalid password', 401))
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
@@ -31,7 +31,7 @@ exports.loginUser = async (req, res, next) => {
             data: user
         })
 
-    }catch(err){
+    } catch (err) {
         res.status(401).json({
             status: 'fail',
             message: err.message
@@ -42,17 +42,28 @@ exports.loginUser = async (req, res, next) => {
 exports.verifyUser = async (req, res, next) => {
     const token = req.cookies['notes-app']
 
-    try{
-        if(!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
+    try {
+        if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        req.userId = decoded.id
+
+        const user = await User.findById(decoded.id)
+        req.user = user
+
         console.log('verified')
         next()
-        
-    }catch(err){
+
+    } catch (err) {
         res.status(401).json({
             status: 'fail',
             data: err.message
         })
+    }
+}
+
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) return next(new AppError('You do not have permission to perform this action', 403))
+
+        next()
     }
 }
