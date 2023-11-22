@@ -31,6 +31,13 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     }
+}, {
+    methods: {
+        validatePassword: async function (candidate){
+            const passwordIsValid = await bcrypt.compare(candidate, this.password)
+            return passwordIsValid
+        }
+    }
 })
 
 userSchema.pre('save', async function (next) {
