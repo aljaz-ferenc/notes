@@ -18,6 +18,8 @@ exports.loginUser = async (req, res, next) => {
             expiresIn: process.env.JWT_EXPIRES_IN
         })
 
+        user.password = undefined
+
         res.cookie('notes-app', token, {
             httpOnly: true,
             secure: true,

@@ -49,3 +49,21 @@ exports.getAllUsers = async (req, res, next) => {
         })
     }
 }
+
+exports.getUser = async (req, res, next) => {
+    const {userId} = req.params
+    
+    try{
+        const user = await User.findById(userId)
+        
+        res.status(200).json({
+            status: 'success',
+            data: user
+        })
+    }catch(err){
+        res.status(404).json({
+            status: 'fail',
+            message: 'User not found'
+        })
+    }
+}
