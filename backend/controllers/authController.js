@@ -41,12 +41,18 @@ exports.loginUser = async (req, res, next) => {
 
 exports.verifyUser = async (req, res, next) => {
     const token = req.cookies['notes-app']
-    if(!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
-    
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    res.status(200).json({
-        status: 'success',
-        data: decoded.id
-    })
+    try{
+        if(!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        req.userId = decoded.id
+        console.log('verified')
+        next()
+        
+    }catch(err){
+        res.status(401).json({
+            status: 'fail',
+            data: err.message
+        })
+    }
 }

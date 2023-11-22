@@ -1,13 +1,14 @@
 const express = require('express')
 const userController = require('../controllers/userController')
+const authController = require('../controllers/authController')
 
 const router = express.Router()
 
 router.route('/')
-    .get(userController.getAllUsers)
+    .get(authController.verifyUser, userController.getAllUsers)
     .post(userController.createUser)
 
 router.route('/:userId')
-    .get(userController.getUser)
+    .get(authController.verifyUser, userController.getUser)
 
 module.exports = router
