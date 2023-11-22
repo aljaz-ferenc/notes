@@ -47,6 +47,8 @@ exports.verifyUser = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
         const user = await User.findById(decoded.id)
+        if(!user) return next(new AppError('User not found', 404))
+
         req.user = user
 
         console.log('verified')
@@ -65,5 +67,37 @@ exports.restrictTo = (...roles) => {
         if (!roles.includes(req.user.role)) return next(new AppError('You do not have permission to perform this action', 403))
 
         next()
+    }
+}
+
+exports.updatePassword = async (req, res, next) => {
+    const {currentPassword, newPassword, newPasswordConfirm} = req.body
+    const user = req.user
+
+    if(!currentPassword || !newPassword || !newPasswordConfirm) return next(new AppError('Password missing'))
+    if(currentPassword === newPassword) return next(new AppError('New password cannot be the same as the old password'))
+    
+    try{
+        const passwordIsValid = await user.validatePassword(currentPassword)
+        console.log(currentPassword, newPassword, newPasswordConfirm)
+        
+        if(!passwordIsValid) return next(new AppError('Password incorrect', 400))
+        if(newPassword !== newPasswordConfirm) return next(new AppError('Passwords do not match', 400))
+
+        user.password = newPassword
+        user.passwordConfirm = newPasswordConfirm
+        await user.save()
+
+        user.password = undefined
+        
+        res.status(201).json({
+            status: 'success',
+            data: user
+        })
+    }catch(err){
+        res.status(400).json({
+            status: 'fail',
+            message: err.message
+        })
     }
 }

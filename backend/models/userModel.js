@@ -35,7 +35,8 @@ const userSchema = new mongoose.Schema({
 }, {
     methods: {
         validatePassword: async function (candidate){
-            const passwordIsValid = await bcrypt.compare(candidate, this.password)
+            const user = await this.model('User').findById(this._id).select('+password')
+            const passwordIsValid = await bcrypt.compare(candidate, user.password)
             return passwordIsValid
         }
     }
