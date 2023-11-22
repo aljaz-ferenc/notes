@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const AppError = require('../utils/AppError')
+const blacklistedTokens = require('../blacklistedTokens')
 
 exports.loginUser = async (req, res, next) => {
     const { email, password } = req.body
@@ -36,3 +37,14 @@ exports.loginUser = async (req, res, next) => {
     }
 }
 
+exports.verifyUser = async (req, res, next) => {
+    const token = req.cookies['notes-app']
+    if(!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    res.status(200).json({
+        status: 'success',
+        data: decoded.id
+    })
+}
