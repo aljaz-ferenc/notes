@@ -56,15 +56,16 @@ exports.getUser = async (req, res, next) => {
     
     try{
         const user = await User.findById(userId)
+        if(!user) return next(new AppError('This user doesn\' exist', 404))
         
         res.status(200).json({
             status: 'success',
             data: user
         })
     }catch(err){
-        res.status(404).json({
-            status: 'fail',
-            message: 'User not found'
+        res.status(500).json({
+            status: 'error',
+            message: err.message
         })
     }
 }

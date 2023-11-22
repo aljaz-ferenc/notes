@@ -10,4 +10,5 @@ router.route('/')
     
 router.route('/:noteId')
     .patch(authController.verifyUser, noteController.updateNote)
+    .delete(authController.verifyUser, noteController.deleteNote)
 module.exports = router

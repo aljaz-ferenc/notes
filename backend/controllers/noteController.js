@@ -2,11 +2,12 @@ const Note = require('../models/noteModel')
 const AppError = require('../utils/AppError')
 
 exports.createNote = async (req, res, next) => {
-    const {title, content, createdAt, tags} = req.body
+    const {title, content, tags} = req.body
+
     if(!title || !content || !tags) return next(new AppError('Fields missing', 400))
 
     try{
-        const note = await Note.create({title, content, tags})
+        const note = await Note.create({title, content, tags, user: req.user.id})
 
         res.status(201).json({
             status: 'success',
@@ -54,6 +55,33 @@ exports.updateNote = async (req, res, next) => {
         res.status(500).json({
             status: 'error',
             message: 'Could not update note'
+        })
+    }
+}
+
+exports.deleteNote = async (req, res, next) => {
+    const {noteId} = req.params
+
+    try{
+        const note = await Note.findById(noteId)
+        if(!note) return next(new AppError('This note doesn\'t exist'))
+        
+        //Can only delete own note, or if role === 'admin' 
+        if(req.user.id !== note.user && req.user.role !== 'admin') return next(new AppError('You do not have permission to perform this action', 401))
+        
+        await note.deleteOne()
+
+        const notes = await Note.find()
+
+        res.status(200).json({
+            status: 'success',
+            data: notes
+        })
+
+    }catch(err){
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not delete the note'
         })
     }
 }
