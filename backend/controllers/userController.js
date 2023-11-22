@@ -1,6 +1,5 @@
 const User = require('../models/userModel')
 
-
 exports.createUser = async (req, res, next) => {
     const { password, passwordConfirm, email } = req.body
 
@@ -30,6 +29,23 @@ exports.createUser = async (req, res, next) => {
         res.status(400).json({
             status: 'fail',
             message: errorMessage
+        })
+    }
+}
+
+exports.getAllUsers = async (req, res, next) => {
+    try {
+        const users = await User.find()
+
+        res.status(200).json({
+            status: 'success',
+            data: users
+        })
+
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not get users'
         })
     }
 }
