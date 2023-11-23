@@ -48,7 +48,7 @@ exports.protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
         const user = await User.findById(decoded.id)
-        if(!user) return next(new AppError('User not found', 404))
+        if (!user) return next(new AppError('User not found', 404))
 
         req.user = user
 
@@ -112,19 +112,27 @@ exports.authenticate = async (req, res, next) => {
     const token = req.cookies['notes-app']
     console.log(token)
 
-    try{
-        if(!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token'))
+    try {
+        if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token'))
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-        if(!decoded)return next(new AppError('Invalid token'))
+        if (!decoded) return next(new AppError('Invalid token'))
 
         const user = await User.findById(decoded.id)
+        const notes = await Note.find({ user: user._id })
+
+        const userData = {
+            id: user._id,
+            email: user.email,
+            notes: notes
+        }
 
         res.status(200).json({
             status: 'success',
-            user: user
+            data: userData
         })
-    }catch(err){
+        
+    } catch (err) {
         res.status(500).json({
             status: 'error',
             message: 'Could not authenticate user'
@@ -141,30 +149,30 @@ exports.restrictTo = (...roles) => {
 }
 
 exports.updatePassword = async (req, res, next) => {
-    const {currentPassword, newPassword, newPasswordConfirm} = req.body
+    const { currentPassword, newPassword, newPasswordConfirm } = req.body
     const user = req.user
 
-    if(!currentPassword || !newPassword || !newPasswordConfirm) return next(new AppError('Password missing'))
-    if(currentPassword === newPassword) return next(new AppError('New password cannot be the same as the old password'))
-    
-    try{
+    if (!currentPassword || !newPassword || !newPasswordConfirm) return next(new AppError('Password missing'))
+    if (currentPassword === newPassword) return next(new AppError('New password cannot be the same as the old password'))
+
+    try {
         const passwordIsValid = await user.validatePassword(currentPassword)
         console.log(currentPassword, newPassword, newPasswordConfirm)
-        
-        if(!passwordIsValid) return next(new AppError('Password incorrect', 400))
-        if(newPassword !== newPasswordConfirm) return next(new AppError('Passwords do not match', 400))
+
+        if (!passwordIsValid) return next(new AppError('Password incorrect', 400))
+        if (newPassword !== newPasswordConfirm) return next(new AppError('Passwords do not match', 400))
 
         user.password = newPassword
         user.passwordConfirm = newPasswordConfirm
         await user.save()
 
         user.password = undefined
-        
+
         res.status(201).json({
             status: 'success',
             data: user
         })
-    }catch(err){
+    } catch (err) {
         res.status(400).json({
             status: 'fail',
             message: err.message

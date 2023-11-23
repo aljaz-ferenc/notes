@@ -1,0 +1,12 @@
+@import "../sass/mixins.scss";
+
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100% !important;
+  height: 100%;
+  gap: 2rem;
+  padding: 2rem;
+  overflow-y: scroll;
+}

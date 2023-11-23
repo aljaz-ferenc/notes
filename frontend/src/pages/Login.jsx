@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
+import LoginForm from "../components/login/LoginForm";
+import RegisterForm from "../components/login/RegisterForm";
 import { useNavigate } from "react-router";
 import { useUserContext } from "../UserContext";
 import "./Login.scss";

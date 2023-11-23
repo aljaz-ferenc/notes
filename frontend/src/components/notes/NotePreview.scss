@@ -1,0 +1,79 @@
+@import "../../sass/variables.scss";
+
+.note-preview {
+  background-color: white;
+  padding: 1rem;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  &.active {
+    border: 2px solid $--color-primary;
+    background-color: rgb(250, 250, 250);
+  }
+  &__title {
+    margin-bottom: 1rem;
+  }
+  &__content {
+    margin-bottom: 1rem;
+  }
+  & input {
+    margin-bottom: 1rem;
+    border: none;
+    font-size: 1.17rem;
+    font-weight: bold;
+    width: min-content;
+  }
+  & textarea {
+    height: 0;
+    width: 100%;
+    border: none;
+    outline-offset: 0.5rem;
+    resize: none;
+    overflow-y: hidden;
+    height: fit-content;
+    &:focus,
+    &:active {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+  }
+  &__edit-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    transition: all 0.2s;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0.3rem;
+    &:hover {
+      background-color: $--color-primary-light;
+      fill: $--color-primary;
+    }
+  }
+  .edit-buttons {
+    display: flex;
+    gap: 1rem;
+    & .button {
+      margin-top: 1rem;
+    }
+  }
+  &__delete-btn {
+    display: none;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    cursor: pointer;
+  }
+  &:hover {
+    .note__delete-btn {
+      display: block !important;
+    }
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}

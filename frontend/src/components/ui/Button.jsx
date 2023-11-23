@@ -21,7 +21,11 @@ export default function Button({
     cursor: "pointer",
     borderRadius: "20px",
     width: "min-content",
-    padding: ".5rem 2rem",
+    padding: ".5rem 1rem",
+    display: 'flex',
+    alignItems: 'center',
+    gap: '.5rem',
+    fontSize: '1rem'
   }
 
   function handleMouseEnter(){

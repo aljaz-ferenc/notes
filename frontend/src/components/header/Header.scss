@@ -1,0 +1,19 @@
+.header{
+    grid-column: 1 / -1;
+    grid-row: 1;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    // justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem;
+    &__logout-btn, &__email{
+        cursor: pointer;
+    }
+    & button{
+        margin-right: auto;
+        p{
+            width: max-content;
+        }
+    }
+}

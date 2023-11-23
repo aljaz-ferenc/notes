@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { loginUser } from "../api";
+import { registerUser } from "../../api";
 import { useNavigate } from "react-router";
-import "./LoginForm.scss";
-import Button from "./Button";
+import { useState } from "react";
+import "./RegisterForm.scss";
+import Button from "../ui/Button";
 
-export default function LoginForm({ setState }) {
+export default function RegisterForm({ setState }) {
   const [isFetching, setIsFetching] = useState(false);
   const [serverError, setServerError] = useState("");
 
@@ -17,22 +17,23 @@ export default function LoginForm({ setState }) {
   const navigate = useNavigate();
 
   async function submitForm(formData) {
-    console.log("submit");
     setIsFetching(true);
     try {
-      const res = await loginUser(formData);
+      const res = await registerUser(formData);
       if (res.status === "success") navigate("/");
       else throw new Error(res.message);
     } catch (err) {
       console.log(err.message);
       setServerError(err.message);
+    } finally {
+      setIsFetching(false);
     }
   }
 
   return (
-    <div className="login-form-container">
-      <form className="login-form" onSubmit={handleSubmit(submitForm)}>
-        <h1>Login</h1>
+    <div className="register-form-container">
+      <form className="register-form" onSubmit={handleSubmit(submitForm)}>
+        <h1>Register</h1>
         <div className="input-group">
           <input
             {...register("email")}
@@ -49,12 +50,20 @@ export default function LoginForm({ setState }) {
             id="password"
           />
         </div>
-        <p className="login-form__text-bottom">
-          Don't have an account?
-          <span onClick={() => setState("register")}> Register!</span>
+        <div className="input-group">
+          <input
+            {...register("passwordConfirm")}
+            type="password"
+            id="password-confirm"
+            placeholder="Confirm Password"
+          />
+        </div>
+        <p className="register-form__text-bottom">
+          Already have an account?
+          <span onClick={() => setState("login")}> Login!</span>
         </p>
-        <Button type="submit" colorHover="#4487bd" outline="2px solid white">
-          {isFetching ? "Wait..." : "Login"}
+        <Button colorHover="#4487bd" outline="2px solid white" type="submit">
+          {isFetching ? "Wait..." : "Register"}
         </Button>
       </form>
     </div>
