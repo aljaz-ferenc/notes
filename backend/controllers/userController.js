@@ -1,4 +1,5 @@
 const User = require('../models/userModel')
+const Note = require('../models/noteModel')
 const jwt = require('jsonwebtoken')
 
 exports.createUser = async (req, res, next) => {
@@ -57,11 +58,20 @@ exports.getUser = async (req, res, next) => {
     try{
         const user = await User.findById(userId)
         if(!user) return next(new AppError('This user doesn\' exist', 404))
+
+        const notes = await Note.find({user: user._id})
         
+        const userData =  {
+            id: user._id,
+            email: user.email,
+            notes: notes
+        }
+
         res.status(200).json({
             status: 'success',
-            data: user
+            data: userData
         })
+        
     }catch(err){
         res.status(500).json({
             status: 'error',

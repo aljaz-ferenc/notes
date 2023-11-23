@@ -6,8 +6,8 @@ const router = express.Router()
 router.route('/login')
     .post(authController.loginUser)
 
-router.route('/verify')
-    .post(authController.verify)
+router.route('/')
+    .post(authController.authenticate)
 
 router.route('/updatePassword')
     .patch(authController.protect, authController.updatePassword)

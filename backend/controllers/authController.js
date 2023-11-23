@@ -1,4 +1,5 @@
 const User = require('../models/userModel')
+const Note = require('../models/noteModel')
 const jwt = require('jsonwebtoken')
 const AppError = require('../utils/AppError')
 const blacklistedTokens = require('../blacklistedTokens')
@@ -62,40 +63,71 @@ exports.protect = async (req, res, next) => {
     }
 }
 
-exports.verify = async (req, res, next) => {
+// exports.verify = async (req, res, next) => {
+//     const token = req.cookies['notes-app']
+//     try {
+//         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+//         const user = await User.findById(decoded.id)
+//         if(!user) return next(new AppError('User not found', 404))
+
+//         const notes = await Note.find({user: user._id})
+//         console.log(notes)
+
+//         console.log('verified')
+
+//         const newToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+//             expiresIn: process.env.JWT_EXPIRES_IN
+//         })
+
+//         user.password = undefined
+
+//         res.cookie('notes-app', newToken, {
+//             httpOnly: true,
+//             secure: true,
+//             sameSite: 'None'
+//         })
+
+//         const userData =  {
+//             id: user._id,
+//             email: user.email,
+//             notes: notes
+//         }
+
+//         res.status(200).json({
+//             status: 'success',
+//             data: userData
+//         })
+
+//     } catch (err) {
+//         res.status(401).json({
+//             status: 'fail',
+//             data: err.message
+//         })
+//     }
+// }
+
+exports.authenticate = async (req, res, next) => {
     const token = req.cookies['notes-app']
-    try {
-        if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
+    console.log(token)
+
+    try{
+        if(!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token'))
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
+        if(!decoded)return next(new AppError('Invalid token'))
+
         const user = await User.findById(decoded.id)
-        if(!user) return next(new AppError('User not found', 404))
-
-        req.user = user
-
-        console.log('verified')
-
-        const newToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRES_IN
-        })
-
-        user.password = undefined
-
-        res.cookie('notes-app', newToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None'
-        })
 
         res.status(200).json({
             status: 'success',
-            data: user
+            user: user
         })
-
-    } catch (err) {
-        res.status(401).json({
-            status: 'fail',
-            data: err.message
+    }catch(err){
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not authenticate user'
         })
     }
 }

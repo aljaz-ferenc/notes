@@ -1,9 +1,9 @@
 const API_URL = import.meta.env.VITE_API_URL
 
-export async function verifyUser() {
+export async function authenticateUser() {
     console.log(API_URL)
     try {
-        const response = await fetch(`${API_URL}/auth/verify`, {
+        const response = await fetch(`${API_URL}/auth`, {
             method: 'POST',
             headers: {
                 'Content-Type': "application/json"

@@ -1,16 +1,8 @@
-import React, { useEffect } from 'react'
-import { Outlet, redirect, useLoaderData } from 'react-router'
+import { Outlet, redirect} from 'react-router'
 import Sidebar from '../components/Sidebar'
-import {verifyUser} from '../api'
-import { useUserContext } from '../userContext'
+import {authenticateUser} from '../api'
 
 export default function RootLayout() {
-  const user = useLoaderData()
-  const {updateUser} = useUserContext()
-  
-  useEffect(() => {
-    updateUser(user)
-  }, [])
 
   return (
     <div>
@@ -21,11 +13,13 @@ export default function RootLayout() {
 }
 
 export async function loader(){
-    const res = await verifyUser()
+  const res = await authenticateUser()
 
-    if(res.status === 'success'){
-        return res.data
-    }else{
-        return redirect('/login')
-    }
+  if(res.status === 'success'){
+    console.log('authenticated')
+    return null
+  }else{
+    console.log(res)
+    return redirect('/login')
+  }
 }

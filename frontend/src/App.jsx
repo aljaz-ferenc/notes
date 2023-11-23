@@ -1,10 +1,11 @@
+import { authenticateUser } from '../api'
 import RootLayout from '../layouts/RootLayout'
 import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import Notes from '../pages/Notes'
 import Profile from '../pages/Profile'
 import './App.scss'
-import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import {RouterProvider, createBrowserRouter, redirect} from 'react-router-dom'
 import {loader as rootLoader} from '../layouts/RootLayout'
 
 const router = createBrowserRouter([
