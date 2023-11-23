@@ -39,7 +39,7 @@ exports.loginUser = async (req, res, next) => {
     }
 }
 
-exports.verifyUser = async (req, res, next) => {
+exports.protect = async (req, res, next) => {
     const token = req.cookies['notes-app']
 
     try {
@@ -53,6 +53,44 @@ exports.verifyUser = async (req, res, next) => {
 
         console.log('verified')
         next()
+
+    } catch (err) {
+        res.status(401).json({
+            status: 'fail',
+            data: err.message
+        })
+    }
+}
+
+exports.verify = async (req, res, next) => {
+    const token = req.cookies['notes-app']
+    try {
+        if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+        const user = await User.findById(decoded.id)
+        if(!user) return next(new AppError('User not found', 404))
+
+        req.user = user
+
+        console.log('verified')
+
+        const newToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+            expiresIn: process.env.JWT_EXPIRES_IN
+        })
+
+        user.password = undefined
+
+        res.cookie('notes-app', newToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        })
+
+        res.status(200).json({
+            status: 'success',
+            data: user
+        })
 
     } catch (err) {
         res.status(401).json({

@@ -5,10 +5,10 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 
 router.route('/')
-    .get(authController.verifyUser, authController.restrictTo('admin'), userController.getAllUsers)
+    .get(authController.protect, authController.restrictTo('admin'), userController.getAllUsers)
     .post(userController.createUser)
 
 router.route('/:userId')
-    .get(authController.verifyUser, userController.getUser)
+    .get(authController.protect, userController.getUser)
 
 module.exports = router

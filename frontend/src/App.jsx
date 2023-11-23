@@ -5,12 +5,14 @@ import Notes from '../pages/Notes'
 import Profile from '../pages/Profile'
 import './App.scss'
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import {loader as rootLoader} from '../layouts/RootLayout'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout/>,
     errorElement: <NotFound/>,
+    loader: rootLoader,
     children: [
       {
         index: true,
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'login',
-    element: <Login/>
+    element: <Login/>,
   }
 ])
 

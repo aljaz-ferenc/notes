@@ -36,7 +36,7 @@ app.use(cors({
 app.use(morgan('dev'))
 app.use(cookieParser())
 app.use(helmet())
-app.use('/api', limiter)
+// app.use('/api', limiter)
 app.use(express.json())
 app.use(mongoSanitize())
 app.use(xss())

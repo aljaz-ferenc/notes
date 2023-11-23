@@ -5,10 +5,10 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 
 router.route('/')
-    .post(authController.verifyUser, noteController.createNote)
-    .get(authController.verifyUser, authController.restrictTo('admin'), noteController.getAllNotes)
+    .post(authController.protect, noteController.createNote)
+    .get(authController.protect, authController.restrictTo('admin'), noteController.getAllNotes)
     
 router.route('/:noteId')
-    .patch(authController.verifyUser, noteController.updateNote)
-    .delete(authController.verifyUser, noteController.deleteNote)
+    .patch(authController.protect, noteController.updateNote)
+    .delete(authController.protect, noteController.deleteNote)
 module.exports = router
