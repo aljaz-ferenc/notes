@@ -1,0 +1,39 @@
+@import '../sass/variables.scss';
+
+@mixin form {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: 4rem;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  background-color: rgba($color: rgb(179, 221, 247), $alpha: .1);
+  color: white;
+  backdrop-filter: blur(5px);
+  input {
+    color: white;
+    padding: 0.5rem 0.5rem;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid white;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder{
+        color: white;
+    }
+  }
+  &__text-bottom {
+    font-size: 0.8rem;
+    text-align: center;
+    span {
+        text-decoration: underline;
+        cursor: pointer;
+        transition: all .2s;
+        &:hover{
+          color: rgb(0, 103, 193)
+        }
+    }
+  }
+}
