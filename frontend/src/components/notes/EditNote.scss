@@ -33,4 +33,8 @@
     padding: 0.2rem;
     box-sizing: content-box;
   }
+  &__tags{
+    display: flex;
+    gap: 1rem;
+  }
 }

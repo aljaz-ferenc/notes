@@ -5,6 +5,7 @@ import { useUserContext } from "../../UserContext";
 import { useEffect, useRef, useState } from "react";
 import useClickOutside from "../../functions/hooks/useClickOutside";
 import NoteOptions from "./NoteOptions";
+import Tag from "./Tag";
 
 export default function EditNote() {
   const { noteId } = useParams();
@@ -15,12 +16,15 @@ export default function EditNote() {
   const editAreaRef = useRef();
   const navigate = useNavigate();
   const contentRef = useRef();
-  const actionFinished = useOutletContext()
+  const actionFinished = useOutletContext();
+  const [tags, setTags] = useState([]);
+  const [tag, setTag] = useState("");
 
   useEffect(() => {
     if (!note) return;
     setTitle(note.title);
     setContent(note.content);
+    setTags(note.tags);
   }, [note]);
 
   useEffect(() => {
@@ -36,7 +40,15 @@ export default function EditNote() {
   }
 
   function resizeContentArea() {
-    contentRef.current.style.height = `${contentRef.current.scrollHeight + 3}px`;
+    contentRef.current.style.height = `${
+      contentRef.current.scrollHeight + 3
+    }px`;
+  }
+
+  function handleAddTag(e) {
+    e.preventDefault();
+    setTags((prev) => Array.from(new Set([...prev, tag])));
+    setTag("");
   }
 
   return (
@@ -57,7 +69,26 @@ export default function EditNote() {
                 value={content}
                 ref={contentRef}
               ></textarea>
-              <NoteOptions onResponse={actionFinished} note={note} title={title} content={content}/>
+                <form onSubmit={handleAddTag}>
+                  <input
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
+                    type="text"
+                    placeholder="Add a tag"
+                  />
+                </form>
+                <div className="edit-note__tags">
+                  {tags.map((tag, i) => (
+                    <Tag setTags={setTags} tag={tag} />
+                  ))}
+                </div>
+              <NoteOptions
+                onResponse={actionFinished}
+                note={note}
+                title={title}
+                content={content}
+                tags={tags}
+              />
             </div>,
             document.body
           )}

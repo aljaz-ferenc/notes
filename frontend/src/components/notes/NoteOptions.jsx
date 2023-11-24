@@ -5,47 +5,59 @@ import { MdDeleteForever } from "react-icons/md";
 import Button from "../ui/Button";
 import { deleteNote, updateNote } from "../../api";
 import { useNavigate } from "react-router";
-import {useUserContext} from '../../UserContext'
-import toast, {Toaster} from 'react-hot-toast'
+import { useUserContext } from "../../UserContext";
+import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 
-export default function NoteOptions({note, title, content, onResponse }) {
-  const navigate = useNavigate()
-  const {user, updateNotes, updateOne} = useUserContext()
+export default function NoteOptions({
+  note,
+  title,
+  content,
+  onResponse,
+  tags,
+}) {
+  const navigate = useNavigate();
+  const { user, updateNotes, updateOne } = useUserContext();
 
-  function handleUpdateNote(){
-    console.log(title, content)
-    if(note.title === title && note.content === content) return navigate('../')
-    updateNote(note._id, {title, content})
-      .then(res => {
-        if(res.status === 'success'){
-          updateOne(res.data._id, res.data)
-          console.log(res.data)
-          onResponse(true, 'Note updated successfuly!')
-        }else{
-          throw new Error(res.message)
+  function handleUpdateNote() {
+    //don't update, if title, content or tags did not change
+    if (
+      note.title === title &&
+      note.content === content &&
+      String(note.tags.sort()) === String(tags.sort())
+    )
+      return navigate("../");
+      
+    updateNote(note._id, { title, content, tags })
+      .then((res) => {
+        if (res.status === "success") {
+          updateOne(res.data._id, res.data);
+          console.log(res.data);
+          onResponse(true, "Note updated successfuly!");
+        } else {
+          throw new Error(res.message);
         }
       })
-      .catch(err => {
-        console.log(err.message)
-        onResponse(false, 'Could not update note...')
+      .catch((err) => {
+        console.log(err.message);
+        onResponse(false, "Could not update note...");
       })
-      .finally(() => navigate('../'))
+      .finally(() => navigate("../"));
   }
 
-  function handleDeleteNote(){
+  function handleDeleteNote() {
     deleteNote(note._id)
-      .then(res => {
-        if(res.status === 'success'){
-          updateNotes(res.data)
-          onResponse(true, 'Note deleted successfuly!')
-        }else{
-          throw new Error(res.message)
+      .then((res) => {
+        if (res.status === "success") {
+          updateNotes(res.data);
+          onResponse(true, "Note deleted successfuly!");
+        } else {
+          throw new Error(res.message);
         }
       })
-      .catch(err => {
-        onResponse(false, 'Could not delete note!')
-      })
+      .catch((err) => {
+        onResponse(false, "Could not delete note!");
+      });
   }
 
   return (
