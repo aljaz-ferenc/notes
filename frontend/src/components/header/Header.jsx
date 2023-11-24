@@ -4,7 +4,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 import Button from "../ui/Button";
 import { CgAddR } from "react-icons/cg";
 import { useNavigate } from "react-router";
-import { createNewNote } from "../../api";
+import { createNewNote, logoutUser } from "../../api";
 
 export default function Header() {
   const { user, updateNotes } = useUserContext();
@@ -30,6 +30,17 @@ export default function Header() {
       .catch(err => console.log(err.message))
   }
 
+  function handleLogout(){
+    logoutUser()
+      .then(res => {
+        if(res.status === 'success'){
+          navigate('/login', {replace: true})
+        }else{
+          throw new Error(res.message)
+        }
+      })
+  }
+
   return (
     <header className="header">
       <Button
@@ -43,7 +54,7 @@ export default function Header() {
         <p>New Note</p>
       </Button>
       <p onClick={() => navigate('/profile')} className="header__email">{user.email}</p>
-      <IoLogOutOutline className="header__logout-btn" size={30} />
+      <IoLogOutOutline onClick={handleLogout} className="header__logout-btn" size={30} />
     </header>
   );
 }

@@ -126,3 +126,20 @@ export async function updatePassword(passData) {
         throw new Error(err.message)
     }
 }
+
+export async function logoutUser(){
+    try{
+        const response = await fetch(`${API_URL}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: null
+        })
+        const data = await response.json()
+        return data
+    }catch(err){
+        throw new Error(err.message)
+    }
+}

@@ -151,6 +151,7 @@ exports.restrictTo = (...roles) => {
 exports.updatePassword = async (req, res, next) => {
     const { currentPassword, newPassword, newPasswordConfirm } = req.body
     const user = req.user
+    console.log(currentPassword, newPassword, newPasswordConfirm )
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) return next(new AppError('Password missing'))
     if (currentPassword === newPassword) return next(new AppError('New password cannot be the same as the old password'))
@@ -176,6 +177,24 @@ exports.updatePassword = async (req, res, next) => {
         res.status(400).json({
             status: 'fail',
             message: err.message
+        })
+    }
+}
+
+exports.logoutUser = async (req, res, next) => {
+    const token = req.cookies['notes-app']
+
+    try{
+        if(!token) return next(new AppError('Token doesn\'t exist', 400))    
+        blacklistedTokens.push(token)
+
+        res.status(200).json({
+            status: 'success'
+        })
+    }catch(err){
+        res.status(500),json({
+            status: 'error',
+            message: 'Could not log out'
         })
     }
 }

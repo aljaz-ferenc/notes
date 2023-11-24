@@ -50,7 +50,7 @@ exports.updateNote = async (req, res, next) => {
 
         res.status(201).json({
             status: 'success',
-            data: allNotes
+            data: note
         })
 
     } catch (err) {

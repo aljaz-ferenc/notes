@@ -1,7 +1,7 @@
 import "./ChangePassForm.scss";
 import { useForm } from "react-hook-form";
 import Button from "../ui/Button";
-import { updatePassword } from "../../api";
+import { logoutUser, updatePassword } from "../../api";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -15,14 +15,19 @@ export default function ChangePassForm({ onResponse }) {
     updatePassword(formData)
       .then((res) => {
         if (res.status === "success") {
-          onResponse(true, "Password changed successfuly!");
+          onResponse(true, "Password changed successfuly! Logging out...");
+          setTimeout(() => {
+            logoutUser().then((res) => {
+              if (res.status === "success") {
+                navigate("/login", { replace: true });
+              } else {
+                throw new Error(res.message);
+              }
+            });
+          }, 2500);
         } else {
           throw new Error(res.message);
         }
-        setTimeout(() => {
-          //TODO: log out
-          // navigate("/login");
-        }, 2000);
       })
       .catch((err) => {
         onResponse(false, err.message);
