@@ -12,7 +12,7 @@ export default function SingleNote({ note }) {
   const content = note.content.slice(0, 250);
 
   function handleNoteClick(e) {
-    e.stopPropagation(); // Prevent the click event from propagating to parent elements
+    e.stopPropagation(); 
     navigate(`${note._id}`);
     console.log("clicked ", note._id);
   }

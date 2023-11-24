@@ -61,3 +61,32 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+@mixin profile-form{
+  @include form;
+  color: $--color-text;
+  padding: 2rem;
+  form {
+    max-width: 30rem;
+    width: 100%;
+  }
+  h3 {
+    margin-bottom: 2rem;
+  }
+  .input-group {
+    margin-bottom: 2rem;
+    input {
+      border-color: inherit;
+      color: inherit;
+    }
+  }
+  &__change-password {
+    padding: 2rem;
+  }
+  &__delete-account {
+    background-color: rgba(255, 0, 0, 0.078);
+    border: 1px solid red;
+    width: fit-content;
+    padding: 2rem;
+  }
+}

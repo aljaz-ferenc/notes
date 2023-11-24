@@ -69,7 +69,8 @@ export default function EditNote() {
                 value={content}
                 ref={contentRef}
               ></textarea>
-                <form onSubmit={handleAddTag}>
+                <form className="edit-note__tags" onSubmit={handleAddTag}>
+                  <h3>Tags</h3>
                   <input
                     value={tag}
                     onChange={(e) => setTag(e.target.value)}
@@ -77,7 +78,7 @@ export default function EditNote() {
                     placeholder="Add a tag"
                   />
                 </form>
-                <div className="edit-note__tags">
+                <div className="edit-note__tags--list">
                   {tags.map((tag, i) => (
                     <Tag setTags={setTags} tag={tag} />
                   ))}

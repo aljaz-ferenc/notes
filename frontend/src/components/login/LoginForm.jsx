@@ -17,7 +17,6 @@ export default function LoginForm({ setState }) {
   const navigate = useNavigate();
 
   async function submitForm(formData) {
-    console.log("submit");
     setIsFetching(true);
     try {
       const res = await loginUser(formData);

@@ -1,0 +1,6 @@
+@import "../../sass/mixins.scss";
+@import "../../sass/variables.scss";
+
+.delete-account {
+    @include profile-form;
+}

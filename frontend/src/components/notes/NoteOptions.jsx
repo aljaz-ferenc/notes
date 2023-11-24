@@ -82,7 +82,7 @@ export default function NoteOptions({
       </Button>
       <Button
         backgroundColor="red"
-        backgroundColorHover="black"
+        backgroundColorHover="#e40000"
         colorHover="white"
         onClick={handleDeleteNote}
       >
