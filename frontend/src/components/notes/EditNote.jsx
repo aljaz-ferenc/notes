@@ -6,6 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import useClickOutside from "../../functions/hooks/useClickOutside";
 import NoteOptions from "./NoteOptions";
 import Tag from "./Tag";
+import { FaCopy } from "react-icons/fa";
+import Button from "../ui/Button";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function EditNote() {
   const { noteId } = useParams();
@@ -51,10 +54,16 @@ export default function EditNote() {
     setTag("");
   }
 
+  function handleCopyToClipboard(){
+    navigator.clipboard.writeText(content)
+    toast.success('Copied!')
+  }
+
   return (
     <>
       {note && (
         <div className="edit-note-container">
+          <Toaster position="top-center"/>
           {createPortal(
             <div ref={editAreaRef} className="edit-note">
               <input
@@ -69,6 +78,10 @@ export default function EditNote() {
                 value={content}
                 ref={contentRef}
               ></textarea>
+              <Button onClick={handleCopyToClipboard}>
+                <FaCopy/>
+                <p style={{width: 'max-content'}}>Copy content</p>
+              </Button>
                 <form className="edit-note__tags" onSubmit={handleAddTag}>
                   <h3>Tags</h3>
                   <input

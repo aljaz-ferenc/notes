@@ -109,3 +109,20 @@ export async function createNewNote(noteData) {
         throw new Error(err.message)
     }
 }
+
+export async function updatePassword(passData) {
+    try {
+        const response = await fetch(`${API_URL}/auth/updatePassword`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(passData)
+        })
+        const data = await response.json()
+        return data
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}

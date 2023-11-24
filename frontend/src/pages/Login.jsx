@@ -12,7 +12,7 @@ export default function Login() {
 
   useEffect(() => {
     if (!user.loggedIn) return;
-    navigate("/");
+    navigate("/notes");
   }, [user.loggedIn]);
 
   return (

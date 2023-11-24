@@ -6,11 +6,12 @@ export default function Button({
   type = "button",
   onClick,
   color = "white",
-  colorHover = 'rgb(30, 30, 30)',
-  backgroundColor = "rgb(68, 135, 189)",
-  backgroundColorHover = '',
+  colorHover = 'white',
+  backgroundColor = "#3f84ed",
+  backgroundColorHover = '#1160d7',
   transition = 'all .2s',
   outline,
+  isSubmitting=false
 }) 
 {
   const [bgColor, setBgColor] = useState(backgroundColor)
@@ -46,6 +47,7 @@ export default function Button({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className="button"
+      disabled={isSubmitting}
     >
       {children}
     </button>
