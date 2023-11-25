@@ -1,5 +1,10 @@
 @import "../sass/mixins.scss";
 
+.notes-container{
+  display: flex;
+  flex-direction: column;
+}
+
 .notes {
   display: flex;
   flex-wrap: wrap;

@@ -1,0 +1,27 @@
+@import '../../sass/variables.scss';
+
+.search{
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    background-color: white;
+    margin-left: .2rem;
+    padding: .5rem 1rem;
+    input{
+        border: none;
+        border-bottom: 1px solid $--color-text;
+        &:focus{
+            outline: none;
+        }
+    }
+    select{
+        border: none;
+        cursor: pointer;
+        &:focus{
+            outline: none;
+        }
+    }
+    button p{
+        width: max-content;
+    }
+}

@@ -6,8 +6,7 @@ import Button from "../ui/Button";
 import { deleteNote, updateNote } from "../../api";
 import { useNavigate, useOutletContext } from "react-router";
 import { useUserContext } from "../../UserContext";
-import toast, { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function NoteOptions({
   note,
