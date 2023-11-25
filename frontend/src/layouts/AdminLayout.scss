@@ -1,0 +1,37 @@
+@import "../sass/variables.scss";
+
+.admin-layout {
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  width: 100%;
+  &__users {
+    background-color: #fff;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    width: min-content;
+    &--user {
+      text-decoration: none;
+      color: $--color-text;
+      padding: 1rem 0.5rem;
+      cursor: pointer;
+      display: flex;
+      gap: 1rem;
+      &:hover {
+        background-color: #d3e4f5;
+        color: $--color-primary;
+        svg {
+          fill: $--color-primary;
+        }
+      }
+      &.active {
+        background-color: #e7f3ff;
+        color: $--color-primary;
+        svg {
+          fill: $--color-primary;
+        }
+      }
+    }
+  }
+}

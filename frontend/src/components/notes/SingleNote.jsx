@@ -13,8 +13,7 @@ export default function SingleNote({ note }) {
 
   function handleNoteClick(e) {
     e.stopPropagation(); 
-    navigate(`${note._id}`);
-    console.log("clicked ", note._id);
+    navigate(`./${note._id}`);
   }
 
   return (
@@ -29,41 +28,3 @@ export default function SingleNote({ note }) {
     </div>
   );
 }
-
-// function handleUpdateNote() {
-//   const updatedFields = {};
-//   if (note.title !== title) updatedFields.title = title;
-//   if (note.content !== content) updatedFields.content = content;
-//   if (Object.entries(updatedFields).length === 0) return setIsEditing(false);
-
-//   updateNote(note._id, updatedFields)
-//     .then((res) => {
-//       if (res.status === "success") {
-//         updateNotes(res.data);
-//       } else {
-//         throw new Error(res.message);
-//       }
-//     })
-//     .catch((err) => console.log(err.message))
-//     .finally(() => {
-//       setIsEditing(false);
-//     });
-// }
-
-// function handleDeleteNote() {
-//   deleteNote(note._id)
-//     .then((res) => {
-//       if (res.status === "success") {
-//         console.log(res.data);
-//         updateNotes(res.data);
-//       } else {
-//         throw new Error(res.message);
-//       }
-//     })
-//     .catch((err) => console.log(err.message))
-//     .finally(() => {
-//       setTitle("");
-//       setContent("");
-//       navigate("../");
-//     });
-// }

@@ -8,7 +8,7 @@ exports.createNote = async (req, res, next) => {
 
     try {
         const note = await Note.create({ title, content, tags, user: req.user.id })
-        const notes = await Note.find({user: req.user._id})
+        const notes = await Note.find({ user: req.user._id })
 
         res.status(201).json({
             status: 'success',
@@ -86,6 +86,42 @@ exports.deleteNote = async (req, res, next) => {
         res.status(500).json({
             status: 'error',
             message: 'Could not delete the note'
+        })
+    }
+}
+
+exports.getNotesByUser = async (req, res, next) => {
+    const { userId } = req.params
+
+    try {
+        const notes = await Note.find({ user: userId })
+
+        res.status(200).json({
+            status: 'success',
+            data: notes
+        })
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not find notes'
+        })
+    }
+}
+
+exports.getNoteById = async (req, res, next) => {
+    const {noteId} = req.params
+
+    try{
+        const note = await Note.findById(noteId)
+
+        res.status(200).json({
+            status: 'success',
+            data: note
+        })
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Could not find note'
         })
     }
 }
