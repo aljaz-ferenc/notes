@@ -20,7 +20,10 @@ export default function LoginForm({ setState }) {
     setIsFetching(true);
     try {
       const res = await loginUser(formData);
-      if (res.status === "success") navigate("/notes");
+      if (res.status === "success") {
+        console.log(res)
+        navigate(`/user/${res.data._id}/notes`)
+      }
       else throw new Error(res.message);
     } catch (err) {
       console.log(err.message);

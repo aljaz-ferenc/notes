@@ -5,9 +5,9 @@ import Notes from './pages/Notes'
 import Profile from './pages/Profile'
 import {RouterProvider, createBrowserRouter, redirect} from 'react-router-dom'
 import {loader as rootLoader} from './layouts/RootLayout'
-import SingleNote from './components/notes/SingleNote'
-import NewNote from './pages/NewNote'
 import EditNote from './components/notes/EditNote'
+import User from './components/admin/User'
+import AdminLayout, { loader } from './layouts/AdminLayout'
 
 const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     loader: rootLoader,
     children: [
       {
-        path: 'notes',
+        path: 'user/:userId/notes',
         element: <Notes/>,
         children: [
           {
@@ -29,6 +29,23 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile/>
+      },
+      {
+        path: 'admin',
+        element: <AdminLayout/>,
+        loader: loader,
+        children: [
+          {
+            path: 'users/:userId/notes',
+            element: <User/>,
+            children: [
+              {
+                path: ':noteId',
+                element: <EditNote/>
+              }
+            ]
+          }
+        ]
       }
     ]
   },

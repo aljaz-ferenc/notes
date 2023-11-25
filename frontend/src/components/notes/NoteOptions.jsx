@@ -4,7 +4,7 @@ import { LiaSaveSolid } from "react-icons/lia";
 import { MdDeleteForever } from "react-icons/md";
 import Button from "../ui/Button";
 import { deleteNote, updateNote } from "../../api";
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { useUserContext } from "../../UserContext";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
@@ -13,11 +13,18 @@ export default function NoteOptions({
   note,
   title,
   content,
-  onResponse,
   tags,
 }) {
   const navigate = useNavigate();
   const { user, updateNotes, updateOne } = useUserContext();
+
+  function actionFinished(wasSuccessful, message) {
+    if (wasSuccessful) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
+  }
 
   function handleUpdateNote() {
     //don't update, if title, content or tags did not change
@@ -33,14 +40,14 @@ export default function NoteOptions({
         if (res.status === "success") {
           updateOne(res.data._id, res.data);
           console.log(res.data);
-          onResponse(true, "Note updated successfuly!");
+          actionFinished(true, "Note updated successfuly!");
         } else {
           throw new Error(res.message);
         }
       })
       .catch((err) => {
         console.log(err.message);
-        onResponse(false, "Could not update note...");
+        actionFinished(false, "Could not update note...");
       })
       .finally(() => navigate("../"));
   }
@@ -50,13 +57,14 @@ export default function NoteOptions({
       .then((res) => {
         if (res.status === "success") {
           updateNotes(res.data);
-          onResponse(true, "Note deleted successfuly!");
+          actionFinished(true, "Note deleted successfuly!");
+          navigate('../')
         } else {
           throw new Error(res.message);
         }
       })
       .catch((err) => {
-        onResponse(false, "Could not delete note!");
+        actionFinished(false, "Could not delete note!");
       });
   }
 

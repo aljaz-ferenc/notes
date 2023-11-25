@@ -13,5 +13,5 @@ router.route('/updatePassword')
     .patch(authController.protect, authController.updatePassword)
 
 router.route('/logout')
-    .post(authController.logoutUser)
+    .post(authController.protect, authController.logoutUser)
 module.exports = router

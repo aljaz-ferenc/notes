@@ -10,10 +10,10 @@ export default function Login() {
   const { user } = useUserContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user.loggedIn) return;
-    navigate("/notes");
-  }, [user.loggedIn]);
+  // useEffect(() => {
+  //   if (!user.loggedIn) return;
+  //   navigate("/notes");
+  // }, [user.loggedIn]);
 
   return (
     <div className="login">

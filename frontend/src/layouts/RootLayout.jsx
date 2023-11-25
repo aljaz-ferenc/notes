@@ -8,7 +8,7 @@ import { useUserContext } from "../UserContext";
 
 export default function RootLayout() {
   const loaderData = useLoaderData();
-  const { user, updateUser } = useUserContext();
+  const { updateUser } = useUserContext();
 
   useEffect(() => {
     updateUser(loaderData);
@@ -27,10 +27,8 @@ export async function loader() {
   const res = await authenticateUser();
 
   if (res.status === "success") {
-    console.log('root layout success')
     return res.data;
   } else {
-    console.log(res);
     return redirect("/login");
   }
 }

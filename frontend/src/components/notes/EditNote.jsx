@@ -9,17 +9,18 @@ import Tag from "./Tag";
 import { FaCopy } from "react-icons/fa";
 import Button from "../ui/Button";
 import toast, { Toaster } from "react-hot-toast";
+import { getNoteById } from "../../api";
 
 export default function EditNote() {
-  const { noteId } = useParams();
+  const { noteId, userId } = useParams();
   const { user } = useUserContext();
-  const note = user.notes.find((note) => note._id === noteId);
+  const [note, setNote] = useState(null)
+ 
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const editAreaRef = useRef();
   const navigate = useNavigate();
   const contentRef = useRef();
-  const actionFinished = useOutletContext();
   const [tags, setTags] = useState([]);
   const [tag, setTag] = useState("");
 
@@ -29,6 +30,21 @@ export default function EditNote() {
     setContent(note.content);
     setTags(note.tags);
   }, [note]);
+
+  useEffect(() => {
+    if(!user.id || !userId) return
+    if(user.id === userId){
+      const n = user.notes.find(nte => nte._id === noteId)
+      setNote(n)
+    }else{
+      getNoteById(noteId)
+        .then(res => {
+          if(res.status === 'success'){
+            setNote(res.data)
+          }
+        })
+    }
+  }, [user.id, userId, noteId])
 
   useEffect(() => {
     if (!editAreaRef.current) return;
@@ -66,6 +82,7 @@ export default function EditNote() {
           <Toaster position="top-center"/>
           {createPortal(
             <div ref={editAreaRef} className="edit-note">
+              <p>By: {user.email}</p>
               <input
                 onChange={(e) => setTitle(e.target.value)}
                 className="edit-note__title"
@@ -97,7 +114,6 @@ export default function EditNote() {
                   ))}
                 </div>
               <NoteOptions
-                onResponse={actionFinished}
                 note={note}
                 title={title}
                 content={content}

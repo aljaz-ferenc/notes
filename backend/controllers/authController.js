@@ -20,6 +20,7 @@ exports.loginUser = async (req, res, next) => {
         })
 
         user.password = undefined
+        console.log(user)
 
         res.cookie('notes-app', token, {
             httpOnly: true,
@@ -42,7 +43,7 @@ exports.loginUser = async (req, res, next) => {
 
 exports.protect = async (req, res, next) => {
     const token = req.cookies['notes-app']
-
+    console.log('protect token: ', token)
     try {
         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
@@ -63,55 +64,10 @@ exports.protect = async (req, res, next) => {
     }
 }
 
-// exports.verify = async (req, res, next) => {
-//     const token = req.cookies['notes-app']
-//     try {
-//         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-
-//         const user = await User.findById(decoded.id)
-//         if(!user) return next(new AppError('User not found', 404))
-
-//         const notes = await Note.find({user: user._id})
-//         console.log(notes)
-
-//         console.log('verified')
-
-//         const newToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//             expiresIn: process.env.JWT_EXPIRES_IN
-//         })
-
-//         user.password = undefined
-
-//         res.cookie('notes-app', newToken, {
-//             httpOnly: true,
-//             secure: true,
-//             sameSite: 'None'
-//         })
-
-//         const userData =  {
-//             id: user._id,
-//             email: user.email,
-//             notes: notes
-//         }
-
-//         res.status(200).json({
-//             status: 'success',
-//             data: userData
-//         })
-
-//     } catch (err) {
-//         res.status(401).json({
-//             status: 'fail',
-//             data: err.message
-//         })
-//     }
-// }
 
 exports.authenticate = async (req, res, next) => {
     const token = req.cookies['notes-app']
-    console.log(token)
-
+    
     try {
         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token'))
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
@@ -124,14 +80,15 @@ exports.authenticate = async (req, res, next) => {
         const userData = {
             id: user._id,
             email: user.email,
-            notes: notes
+            notes: notes,
+            role: user.role
         }
 
         res.status(200).json({
             status: 'success',
             data: userData
         })
-        
+
     } catch (err) {
         res.status(500).json({
             status: 'error',
@@ -141,9 +98,9 @@ exports.authenticate = async (req, res, next) => {
 }
 
 exports.restrictTo = (...roles) => {
+    
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) return next(new AppError('You do not have permission to perform this action', 403))
-
         next()
     }
 }
@@ -151,7 +108,7 @@ exports.restrictTo = (...roles) => {
 exports.updatePassword = async (req, res, next) => {
     const { currentPassword, newPassword, newPasswordConfirm } = req.body
     const user = req.user
-    console.log(currentPassword, newPassword, newPasswordConfirm )
+    console.log(currentPassword, newPassword, newPasswordConfirm)
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) return next(new AppError('Password missing'))
     if (currentPassword === newPassword) return next(new AppError('New password cannot be the same as the old password'))
@@ -184,15 +141,15 @@ exports.updatePassword = async (req, res, next) => {
 exports.logoutUser = async (req, res, next) => {
     const token = req.cookies['notes-app']
 
-    try{
-        if(!token) return next(new AppError('Token doesn\'t exist', 400))    
+    try {
+        if (!token) return next(new AppError('Token doesn\'t exist', 400))
         blacklistedTokens.push(token)
 
         res.status(200).json({
             status: 'success'
         })
-    }catch(err){
-        res.status(500),json({
+    } catch (err) {
+        res.status(500), json({
             status: 'error',
             message: 'Could not log out'
         })
