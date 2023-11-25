@@ -19,7 +19,7 @@ export default function Profile() {
   return (
     <div className="profile">
       <Toaster/>
-      <h2>Your profile</h2>
+      <h1>Your profile</h1>
       <ChangePassForm onResponse={actionFinished}/>
       <DeleteAccForm onResponse={actionFinished}/>
     </div>

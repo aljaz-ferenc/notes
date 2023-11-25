@@ -55,6 +55,7 @@ export default function NoteOptions({
   function handleDeleteNote() {
     deleteNote(note._id)
       .then((res) => {
+        console.log(res)
         if (res.status === "success") {
           updateNotes(res.data);
           actionFinished(true, "Note deleted successfuly!");
@@ -64,6 +65,7 @@ export default function NoteOptions({
         }
       })
       .catch((err) => {
+        console.log(err.message)
         actionFinished(false, "Could not delete note!");
       });
   }

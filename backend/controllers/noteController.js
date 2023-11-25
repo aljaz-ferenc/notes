@@ -3,7 +3,6 @@ const AppError = require('../utils/AppError')
 
 exports.createNote = async (req, res, next) => {
     const { title, content, tags } = req.body
-    console.log(req.user)
     if (!title || !content || !tags) return next(new AppError('Fields missing', 400))
 
     try {
@@ -42,7 +41,6 @@ exports.getAllNotes = async (req, res, next) => {
 exports.updateNote = async (req, res, next) => {
     const { noteId } = req.params
     const updatedFields = req.body
-    console.log(updatedFields)
     try {
         const note = await Note.findByIdAndUpdate(noteId, { ...updatedFields }, { new: true })
         const allNotes = await Note.find({ user: req.user._id })
@@ -63,6 +61,7 @@ exports.updateNote = async (req, res, next) => {
 
 exports.deleteNote = async (req, res, next) => {
     const { noteId } = req.params
+    console.log(noteId)
 
     try {
         const note = await Note.findById(noteId)

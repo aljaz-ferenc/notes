@@ -22,7 +22,8 @@ export default function Header() {
         console.log(res)
         if(res.status === 'success'){
           updateNotes(res.data)
-          navigate(`/notes/${res.data.at(-1)._id}`)
+          navigate(`user/${user.id}/notes/${res.data.at(-1)._id}`)
+          // navigate('../')
         }else{
           throw new Error(res.message)
         }
