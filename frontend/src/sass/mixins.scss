@@ -1,4 +1,4 @@
-@import '../sass/variables.scss';
+@import "../sass/variables.scss";
 
 @mixin form {
   display: flex;
@@ -7,33 +7,44 @@
   padding: 4rem;
   border-radius: 5px;
   font-size: 1.2rem;
-  background-color: rgba($color: rgb(179, 221, 247), $alpha: .1);
+  color: $--color-text !important;
+  background-color: rgba($color: rgb(206, 233, 250), $alpha: 0.5);
   color: white;
   backdrop-filter: blur(5px);
+  .input-group {
+    position: relative;
+    .error {
+      color: rgb(255, 57, 57);
+      position: absolute;
+      bottom: 0;
+      transform: translateY(100%);
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+  }
   input {
-    color: white;
     padding: 0.5rem 0.5rem;
     width: 100%;
     border: none;
     background-color: transparent;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid $--color-text;
     &:focus {
       outline: none;
     }
-    &::placeholder{
-        color: white;
+    &::placeholder {
+      color: $--color-text;
     }
   }
   &__text-bottom {
     font-size: 0.8rem;
     text-align: center;
     span {
-        text-decoration: underline;
-        cursor: pointer;
-        transition: all .2s;
-        &:hover{
-          color: rgb(0, 103, 193)
-        }
+      text-decoration: underline;
+      cursor: pointer;
+      transition: all 0.2s;
+      &:hover {
+        color: rgb(0, 103, 193);
+      }
     }
   }
 }
@@ -55,17 +66,18 @@
   }
 }
 
-@mixin center-self-absolute{
+@mixin center-self-absolute {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-@mixin profile-form{
+@mixin profile-form {
   @include form;
-  color: $--color-text;
-  padding: 2rem;
+  color: $--color-text !important;
+  padding: 0;
+  margin-top: 3rem;
   form {
     max-width: 30rem;
     width: 100%;
@@ -89,9 +101,9 @@
     width: fit-content;
     padding: 2rem;
   }
-  &__note{
+  &__note {
     margin-bottom: 2rem !important;
-    font-size: .8rem;
+    font-size: 0.8rem;
     color: red;
- }
+  }
 }

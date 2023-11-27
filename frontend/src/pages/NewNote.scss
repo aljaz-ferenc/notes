@@ -1,27 +1,28 @@
-@import '../sass/variables.scss';
-.notes-container{
-    display: flex;
-    
-    .new-note{
-        background-color: white;
-        width: 100%;
+@import "../sass/variables.scss";
+.notes-container {
+  display: flex;
+
+  .new-note {
+    background-color: white;
+    width: 100%;
     padding: 1rem;
-    &__inputs{
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        textarea{
-            resize: none;
-        }
-        input{
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        input, textarea{
-            border: none;
-            outline: none;
-            padding: .5rem;
-        }
+    &__inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      textarea {
+        resize: none;
+      }
+      input {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+      input,
+      textarea {
+        border: none;
+        outline: none;
+        padding: 0.5rem;
+      }
     }
+  }
 }
-        }

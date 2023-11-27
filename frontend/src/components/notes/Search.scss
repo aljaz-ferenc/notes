@@ -1,27 +1,47 @@
-@import '../../sass/variables.scss';
+@import "../../sass/variables.scss";
 
-.search{
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    background-color: white;
-    margin-left: .2rem;
-    padding: .5rem 1rem;
-    input{
-        border: none;
-        border-bottom: 1px solid $--color-text;
-        &:focus{
-            outline: none;
-        }
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem;
+  background-color: white;
+  margin-left: 0.2rem;
+  padding: 0.5rem 1rem;
+  input {
+    border: none;
+    border-bottom: 1px solid $--color-text;
+    &:focus {
+      outline: none;
     }
-    select{
-        border: none;
-        cursor: pointer;
-        &:focus{
-            outline: none;
-        }
+  }
+  select {
+    border: none;
+    cursor: pointer;
+    &:focus {
+      outline: none;
     }
-    button p{
-        width: max-content;
+  }
+  button p {
+    width: max-content;
+  }
+}
+
+@media (max-width: 768px) {
+  .search {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .search {
+    font-size: 0.8rem;
+    gap: 0.5rem;
+    button {
+      padding: 0.3rem 0.5rem !important;
+      p {
+        font-size: 0.8rem;
+      }
     }
+  }
 }

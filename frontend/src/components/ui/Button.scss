@@ -1,0 +1,21 @@
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: 2rem;
+  .spinner {
+    padding: 1rem;
+  }
+  button {
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    width: min-content;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+}

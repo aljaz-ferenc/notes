@@ -1,14 +1,10 @@
 import { useNavigate } from "react-router";
 import Button from "../components/ui/Button";
 import "./NewNote.scss";
-import { useRef, useState } from "react";
 import { LiaSaveSolid } from "react-icons/lia";
 
 export default function NewNote() {
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(true);
-  const [title, setTitle] = useState("New Title");
-  const [content, setContent] = useState("New Content");
 
   return (
     <div className="new-note-container">

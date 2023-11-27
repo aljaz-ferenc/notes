@@ -1,5 +1,3 @@
-import { json } from "react-router"
-
 const API_URL = import.meta.env.VITE_API_URL
 
 export async function authenticateUser() {
@@ -58,7 +56,6 @@ export async function registerUser(userData) {
 }
 
 export async function updateNote(noteId, updatedFields) {
-    console.log(updatedFields)
     try {
         const response = await fetch(`${API_URL}/notes/${noteId}`, {
             method: 'PATCH',
@@ -207,3 +204,19 @@ export async function getNoteById(noteId) {
     }
 }
 
+export async function deleteAccount({ userId, email, password }) {
+    try {
+        const response = await fetch(`${API_URL}/users/${userId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        const data = await response.json()
+        return data
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}

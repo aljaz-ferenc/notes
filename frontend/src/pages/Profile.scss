@@ -1,7 +1,54 @@
-@import '../sass/mixins.scss';
-@import '../sass/variables.scss';
+@import "../sass/mixins.scss";
+@import "../sass/variables.scss";
 
-.profile{
-    overflow-y: scroll;
-    padding: 2rem;
+.profile {
+  overflow-y: scroll;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .profile {
+    padding: 1rem;
+    padding-right: 0;
+    h1 {
+      font-size: 1.8rem;
+    }
+    .change-password,
+    .delete-account {
+      font-size: 1rem !important;
+      .input-group {
+        margin-bottom: 1.5rem;
+        input {
+          padding: 0.2rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .profile {
+    button {
+      font-size: 0.9rem !important;
+    }
+    padding: 1rem;
+    h1 {
+      font-size: 1.5rem;
+    }
+    .change-password,
+    .delete-account {
+      padding-top: 0;
+      &__note {
+        font-size: 0.7rem;
+      }
+      padding: 0;
+      font-size: 0.8rem !important;
+      .input-group {
+        margin-bottom: 1rem;
+        input {
+          padding: 0.2rem;
+        }
+      }
+    }
+  }
 }

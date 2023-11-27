@@ -2,6 +2,7 @@ import "./Tag.scss";
 import { IoCloseCircle } from "react-icons/io5";
 
 export default function Tag({ tag, setTags }) {
+  
   function handleremoveTag() {
     setTags((prev) => [...prev.filter((prevTag) => prevTag !== tag)]);
   }

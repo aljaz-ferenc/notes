@@ -6,7 +6,7 @@ exports.createNote = async (req, res, next) => {
     if (!title || !content || !tags) return next(new AppError('Fields missing', 400))
 
     try {
-        const note = await Note.create({ title, content, tags, user: req.user.id })
+        await Note.create({ title, content, tags, user: req.user.id })
         const notes = await Note.find({ user: req.user._id })
 
         res.status(201).json({
@@ -41,9 +41,9 @@ exports.getAllNotes = async (req, res, next) => {
 exports.updateNote = async (req, res, next) => {
     const { noteId } = req.params
     const updatedFields = req.body
+    
     try {
         const note = await Note.findByIdAndUpdate(noteId, { ...updatedFields }, { new: true })
-        const allNotes = await Note.find({ user: req.user._id })
         if (!note) return next(new AppError('This note doesn\'t exist'))
 
         res.status(201).json({
@@ -61,17 +61,15 @@ exports.updateNote = async (req, res, next) => {
 
 exports.deleteNote = async (req, res, next) => {
     const { noteId } = req.params
-    console.log(noteId)
-
+    
     try {
         const note = await Note.findById(noteId)
-        if (!note) return next(new AppError('This note doesn\'t exist'))
 
-        //Can only delete own note, or if role === 'admin' 
+        //Can only delete your own note, or if role === 'admin' 
         if (req.user._id.toString() === note.user.toString() || req.user.role === 'admin') {
             await note.deleteOne()
 
-            const notes = await Note.find()
+            const notes = await Note.find({user: req.user._id})
 
             res.status(200).json({
                 status: 'success',
@@ -82,9 +80,9 @@ exports.deleteNote = async (req, res, next) => {
         }
 
     } catch (err) {
-        res.status(500).json({
+        res.status(404).json({
             status: 'error',
-            message: 'Could not delete the note'
+            message: 'Note not found'
         })
     }
 }
@@ -100,27 +98,27 @@ exports.getNotesByUser = async (req, res, next) => {
             data: notes
         })
     } catch (err) {
-        res.status(500).json({
+        res.status(404).json({
             status: 'error',
-            message: 'Could not find notes'
+            message: 'Notes not found'
         })
     }
 }
 
 exports.getNoteById = async (req, res, next) => {
-    const {noteId} = req.params
+    const { noteId } = req.params
 
-    try{
+    try {
         const note = await Note.findById(noteId)
-
+        if(!note) return next(new AppError('This note doesn\'t exist', 404))
         res.status(200).json({
             status: 'success',
             data: note
         })
     } catch (err) {
-        res.status(500).json({
+        res.status(404).json({
             status: 'error',
-            message: 'Could not find note'
+            message: 'Note not found.'
         })
     }
 }

@@ -1,34 +1,49 @@
-@import '../../sass/variables.scss';
+@import "../../sass/variables.scss";
 
-.sidebar-item{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-    text-decoration: none;
-    color: $--color-text;
-    padding: 1rem;
-    transition: all .2s;
-    height: 3.2rem;
-    & svg{
-        transition: all .2s;
+.sidebar-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: $--color-text;
+  padding: 1rem;
+  transition: all 0.2s;
+  height: 3.2rem;
+  & svg {
+    transition: all 0.2s;
+  }
+  &.active {
+    background-color: #e7f3ff;
+    & p {
+      color: $--color-primary;
     }
-    &.active{
-        background-color: #e7f3ff;
-        & p{
-            color: $--color-primary;
-        }
-        & svg{
-            fill: $--color-primary;
-        }
+    & svg {
+      fill: $--color-primary;
     }
-    &:hover{
-        background-color: #d3e4f5;
-        & p{
-            color: $--color-primary;
-        }
-        & svg{
-            fill: $--color-primary;
-        }
+  }
+  &:hover {
+    background-color: #d3e4f5;
+    & p {
+      color: $--color-primary;
     }
+    & svg {
+      fill: $--color-primary;
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .sidebar-item {
+    p {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .sidebar-item {
+    width: 100%;
+    justify-content: center;
+  }
 }

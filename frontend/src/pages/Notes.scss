@@ -1,6 +1,6 @@
 @import "../sass/mixins.scss";
 
-.notes-container{
+.notes-container {
   display: flex;
   flex-direction: column;
 }
@@ -8,10 +8,21 @@
 .notes {
   display: flex;
   flex-wrap: wrap;
-  align-content: flex-start;
   width: 100% !important;
   gap: 2rem;
   padding: 2rem;
   max-height: 100%;
-  // overflow-y: scroll;
+}
+
+@media (max-width: 768px) {
+  .notes {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .notes {
+    margin-top: 1rem;
+    padding: 0.2rem;
+  }
 }

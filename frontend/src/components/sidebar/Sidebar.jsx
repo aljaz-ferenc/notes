@@ -6,8 +6,8 @@ import SidebarItem from "./SidebarItem";
 import { useUserContext } from "../../UserContext";
 
 export default function Sidebar() {
-  const {user} = useUserContext()
-  
+  const { user } = useUserContext();
+
   return (
     <aside className="sidebar">
       <SidebarItem
@@ -20,11 +20,13 @@ export default function Sidebar() {
         icon={<FaUserCircle size={23} color="gray" />}
         path="/profile"
       />
-      {user.role === 'admin' && <SidebarItem
-        text={"Admin"}
-        icon={<MdAdminPanelSettings  size={23} color="gray" />}
-        path="/admin"
-      />}
+      {user.role === "admin" && (
+        <SidebarItem
+          text={"Admin"}
+          icon={<MdAdminPanelSettings size={23} color="gray" />}
+          path="/admin"
+        />
+      )}
     </aside>
   );
 }

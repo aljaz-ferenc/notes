@@ -20,7 +20,6 @@ exports.loginUser = async (req, res, next) => {
         })
 
         user.password = undefined
-        console.log(user)
 
         res.cookie('notes-app', token, {
             httpOnly: true,
@@ -43,7 +42,6 @@ exports.loginUser = async (req, res, next) => {
 
 exports.protect = async (req, res, next) => {
     const token = req.cookies['notes-app']
-    console.log('protect token: ', token)
     try {
         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token', 401))
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
@@ -53,7 +51,6 @@ exports.protect = async (req, res, next) => {
 
         req.user = user
 
-        console.log('verified')
         next()
 
     } catch (err) {
@@ -67,6 +64,7 @@ exports.protect = async (req, res, next) => {
 
 exports.authenticate = async (req, res, next) => {
     const token = req.cookies['notes-app']
+    console.log(token)
     
     try {
         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token'))
@@ -98,9 +96,10 @@ exports.authenticate = async (req, res, next) => {
 }
 
 exports.restrictTo = (...roles) => {
-    
     return (req, res, next) => {
-        if (!roles.includes(req.user.role)) return next(new AppError('You do not have permission to perform this action', 403))
+        if (!roles.includes(req.user.role)) {
+            return next(new AppError('You do not have permission to perform this action', 403))
+        }
         next()
     }
 }
@@ -108,14 +107,12 @@ exports.restrictTo = (...roles) => {
 exports.updatePassword = async (req, res, next) => {
     const { currentPassword, newPassword, newPasswordConfirm } = req.body
     const user = req.user
-    console.log(currentPassword, newPassword, newPasswordConfirm)
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) return next(new AppError('Password missing'))
     if (currentPassword === newPassword) return next(new AppError('New password cannot be the same as the old password'))
 
     try {
         const passwordIsValid = await user.validatePassword(currentPassword)
-        console.log(currentPassword, newPassword, newPasswordConfirm)
 
         if (!passwordIsValid) return next(new AppError('Password incorrect', 400))
         if (newPassword !== newPasswordConfirm) return next(new AppError('Passwords do not match', 400))

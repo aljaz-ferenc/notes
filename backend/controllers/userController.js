@@ -1,6 +1,8 @@
 const User = require('../models/userModel')
 const Note = require('../models/noteModel')
 const jwt = require('jsonwebtoken')
+const blacklistedTokens = require('../blacklistedTokens')
+const AppError = require('../utils/AppError')
 
 exports.createUser = async (req, res, next) => {
     const { password, passwordConfirm, email, role } = req.body
@@ -72,6 +74,33 @@ exports.getUser = async (req, res, next) => {
             data: userData
         })
         
+    }catch(err){
+        res.status(500).json({
+            status: 'error',
+            message: err.message
+        })
+    }
+}
+
+exports.deleteUser = async (req, res, next) => {
+    const {email, password} = req.body
+    const userId = req.user._id.toString()
+    try{
+        const user = await User.findOne({email})
+
+        if(!user || user._id.toString() !== userId) return next(new AppError('Wrong email.', 404))
+
+        const passwordIsValid = await user.validatePassword(password)
+        if(!passwordIsValid) return next(new AppError('Invalid password', 401))
+        
+        await user.deleteOne()
+        const token = req.cookies['notes-app']
+        blacklistedTokens.push(token)
+
+        res.status(200).json({
+            status: 'success',
+        })
+
     }catch(err){
         res.status(500).json({
             status: 'error',

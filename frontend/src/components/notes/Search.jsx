@@ -10,29 +10,27 @@ export default function Search({ setDisplayedNotes, notes, userId }) {
 
   useEffect(() => {
     handleSearch(notes, query, searchBy, date);
-  }, [query, searchBy, date, userId]);
-
+  }, [query, searchBy, date, userId, notes]);
 
   function handleSearch(notes, query, searchBy, date) {
-    let newNotes = [];
-
-    if (query === "" && !date) return setDisplayedNotes(notes);
-
-    if (searchBy === "title") {
-      newNotes = notes.filter((note) =>
+    let newNotes = [...notes]; 
+  
+    if (searchBy === "title" && query) {
+      newNotes = newNotes.filter((note) =>
         note.title.toLowerCase().includes(query)
       );
     }
-
-    if (searchBy === "tags") {
-      newNotes = notes.filter((note) =>
-        note.tags.some((tag) => tag.toLowerCase().includes(query))
+    
+    if (searchBy === "tags" && query) {
+      newNotes = newNotes.filter((note) =>
+      note.tags.some((tag) => tag.toLowerCase().includes(query))
       );
     }
-
-    if (date && newNotes.length > 0) {
+    
+    if (date) {
       newNotes = newNotes.filter((note) => isSameDay(note.createdAt, date));
     }
+    
     setDisplayedNotes(newNotes);
     return newNotes;
   }
@@ -44,15 +42,20 @@ export default function Search({ setDisplayedNotes, notes, userId }) {
 
   function handleClearInputs() {
     setQuery("");
-    setDate('');
+    setDate("");
     setSearchBy("title");
+  }
+
+  function handleSearchByChange(e) {
+    setSearchBy(e.target.value);
+    setQuery("");
   }
 
   return (
     <div className="search">
       <p>Search by</p>
       <select
-        onChange={(e) => setSearchBy(e.target.value)}
+        onChange={handleSearchByChange}
         name="search"
         id="search"
         value={searchBy}

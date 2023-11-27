@@ -4,10 +4,10 @@ import { loginUser } from "../../api";
 import { useNavigate } from "react-router";
 import "./LoginForm.scss";
 import Button from "../ui/Button";
+import toast from "react-hot-toast";
 
 export default function LoginForm({ setState }) {
   const [isFetching, setIsFetching] = useState(false);
-  const [serverError, setServerError] = useState("");
 
   const {
     register,
@@ -21,13 +21,12 @@ export default function LoginForm({ setState }) {
     try {
       const res = await loginUser(formData);
       if (res.status === "success") {
-        console.log(res)
-        navigate(`/user/${res.data._id}/notes`)
-      }
-      else throw new Error(res.message);
+        navigate(`/user/${res.data._id}/notes`);
+      } else throw new Error(res.message);
     } catch (err) {
-      console.log(err.message);
-      setServerError(err.message);
+      toast.error(err.message);
+    } finally {
+      setIsFetching(false);
     }
   }
 
@@ -37,26 +36,46 @@ export default function LoginForm({ setState }) {
         <h1>Login</h1>
         <div className="input-group">
           <input
-            {...register("email")}
+            {...register("email", {
+              required: {
+                value: true,
+                message: "Email is required.",
+              },
+              validate: {
+                isEmail: (email) =>
+                  email.includes("@") || 'Email must include "@"',
+              },
+            })}
             placeholder="Email"
             type="text"
             id="email"
           />
+          <p className="error">{errors.email?.message}</p>
         </div>
         <div className="input-group">
           <input
-            {...register("password")}
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Password is required.",
+              },
+              minLength: {
+                value: 6,
+                message: "Min 6 characters.",
+              },
+            })}
             placeholder="Password"
             type="password"
             id="password"
           />
+          <p className="error">{errors.password?.message}</p>
         </div>
         <p className="login-form__text-bottom">
           Don't have an account?
           <span onClick={() => setState("register")}> Register!</span>
         </p>
-        <Button type="submit" colorHover="#4487bd" outline="2px solid white">
-          {isFetching ? "Wait..." : "Login"}
+        <Button isSubmitting={isFetching} type="submit" colorHover="white">
+          Login
         </Button>
       </form>
     </div>

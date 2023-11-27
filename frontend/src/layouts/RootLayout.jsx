@@ -5,6 +5,7 @@ import Header from "../components/header/Header";
 import Sidebar from "../components/sidebar/Sidebar";
 import { useEffect } from "react";
 import { useUserContext } from "../UserContext";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout() {
   const loaderData = useLoaderData();
@@ -16,6 +17,7 @@ export default function RootLayout() {
 
   return (
     <div className="root-layout">
+      <Toaster />
       <Header />
       <Sidebar />
       <Outlet />

@@ -13,6 +13,7 @@ const errorHandler = require('./controllers/errorController')
 const userRouter = require('./routes/userRoute.js')
 const authRouter = require('./routes/authRoute.js')
 const noteRouter = require('./routes/noteRoute.js')
+const authController = require('./controllers/authController.js')
 
 
 process.on('uncaughtException', (err) => {
@@ -22,7 +23,7 @@ process.on('uncaughtException', (err) => {
 const app = express()
 
 const limiter = rateLimit({
-    max: 500,
+    max: 200,
     windowMs: 60 * 60 * 1000,
     message: 'Too many requests, try again in an hour!'
 })
@@ -36,7 +37,7 @@ app.use(cors({
 app.use(morgan('dev'))
 app.use(cookieParser())
 app.use(helmet())
-// app.use('/api', limiter)
+app.use('/api', limiter)
 app.use(express.json())
 app.use(mongoSanitize())
 app.use(xss())
@@ -45,7 +46,7 @@ app.use(xss())
 //Routes
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/notes', noteRouter)
+app.use('/api/v1/notes', authController.protect, noteRouter)
 
 app.all('*', (req, res, next) => {
     next(new AppError(`The path ${req.originalUrl} does not exist`, 404))
