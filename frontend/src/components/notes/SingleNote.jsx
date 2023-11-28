@@ -6,7 +6,7 @@ import { dateFormatter } from "../../functions/utils";
 export default function SingleNote({ note }) {
   const navigate = useNavigate();
   const noteRef = useRef();
-  const content = note.content.slice(0, 250);
+  const content = note.content.slice(0, 400);
 
   function handleNoteClick(e) {
     e.stopPropagation();
@@ -24,7 +24,7 @@ export default function SingleNote({ note }) {
       </p>
       <div className="single-note">
         <h3 className="single-note__title">{note.title}</h3>
-        <p className="single-note__content">{content}...</p>
+        <p className="single-note__content">{content}{note.content.length > 400 && '...'}</p>
       </div>
     </div>
   );

@@ -20,7 +20,6 @@ export default function DeleteAccForm() {
   function handleDeleteAccount(formData) {
     deleteAccount({ userId: user.id, ...formData })
       .then((res) => {
-        console.log(res);
         if (res.status === "success") {
           navigate("/login", { replace: true });
         } else {

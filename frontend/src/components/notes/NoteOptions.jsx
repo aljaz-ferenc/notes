@@ -38,8 +38,7 @@ export default function NoteOptions({ note, title, content, tags }) {
         }
       })
       .catch((err) => {
-        console.log(err.message);
-        actionFinished(false, "Could not update note...");
+        actionFinished(false, err.message);
       })
       .finally(() => navigate("../"));
   }
@@ -47,19 +46,17 @@ export default function NoteOptions({ note, title, content, tags }) {
   function handleDeleteNote() {
     deleteNote(note._id)
       .then((res) => {
-        console.log(res);
         if (res.status === "success") {
           updateNotes(res.data);
           actionFinished(true, "Note deleted successfuly!");
-          navigate("../");
         } else {
           throw new Error(res.message);
         }
       })
       .catch((err) => {
-        console.log(err.message);
-        actionFinished(false, "Could not delete note!");
-      });
+        actionFinished(false, err.message);
+      })
+      .finally(() => navigate("../"));
   }
 
   return (

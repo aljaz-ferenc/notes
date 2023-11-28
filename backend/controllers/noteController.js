@@ -44,7 +44,7 @@ exports.updateNote = async (req, res, next) => {
     
     try {
         const note = await Note.findByIdAndUpdate(noteId, { ...updatedFields }, { new: true })
-        if (!note) return next(new AppError('This note doesn\'t exist'))
+        if (!note) return next(new AppError('Note not found'))
 
         res.status(201).json({
             status: 'success',
@@ -110,15 +110,15 @@ exports.getNoteById = async (req, res, next) => {
 
     try {
         const note = await Note.findById(noteId)
-        if(!note) return next(new AppError('This note doesn\'t exist', 404))
+        if(!note) return next(new AppError('Note not found.', 404))
         res.status(200).json({
             status: 'success',
             data: note
         })
     } catch (err) {
-        res.status(404).json({
+        res.status(500).json({
             status: 'error',
-            message: 'Note not found.'
+            message: 'error'
         })
     }
 }

@@ -6,7 +6,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 export default function ChangePassForm({ onResponse }) {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -44,26 +49,53 @@ export default function ChangePassForm({ onResponse }) {
         <div className="input-group">
           <label htmlFor="currentPassword">Password</label>
           <input
-            {...register("currentPassword")}
+            {...register("currentPassword", {
+              required: {
+                value: true,
+                message: "Password required.",
+              },
+            })}
             type="password"
             id="currentPassword"
           />
+          <p className="error">{errors.currentPassword?.message}</p>
         </div>
         <div className="input-group">
           <label htmlFor="newPassword">New password</label>
           <input
-            {...register("newPassword")}
+            {...register("newPassword", {
+              required: {
+                value: true,
+                message: "New password is required.",
+              },
+              minLength: {
+                value: 6,
+                message: "Min 6 characters.",
+              },
+            })}
             type="password"
             id="newPassword"
           />
+          <p className="error">{errors.newPassword?.message}</p>
         </div>
         <div className="input-group">
           <label htmlFor="PpasswordConfirm">Confirm new password</label>
           <input
-            {...register("newPasswordConfirm")}
+            {...register("newPasswordConfirm", {
+              required: {
+                value: true,
+                message: "Please confirm your new password.",
+              },
+              validate: {
+                passwordsMatch: (passConf) =>
+                  passConf === getValues("newPassword") ||
+                  "Passwords do not match.",
+              },
+            })}
             type="password"
             id="PpasswordConfirm"
           />
+          <p className="error">{errors.newPasswordConfirm?.message}</p>
         </div>
         <p className="change-password__note">
           You will have to log in again after changing your password.

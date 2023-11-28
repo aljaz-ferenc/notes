@@ -91,7 +91,7 @@ exports.deleteUser = async (req, res, next) => {
         if(!user || user._id.toString() !== userId) return next(new AppError('Wrong email.', 404))
 
         const passwordIsValid = await user.validatePassword(password)
-        if(!passwordIsValid) return next(new AppError('Invalid password', 401))
+        if(!passwordIsValid) return next(new AppError('Password invalid', 401))
         
         await user.deleteOne()
         const token = req.cookies['notes-app']

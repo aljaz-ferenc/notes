@@ -64,7 +64,6 @@ exports.protect = async (req, res, next) => {
 
 exports.authenticate = async (req, res, next) => {
     const token = req.cookies['notes-app']
-    console.log(token)
     
     try {
         if (!token || blacklistedTokens.includes(token)) return next(new AppError('Invalid or expired token'))

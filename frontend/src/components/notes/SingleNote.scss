@@ -8,12 +8,10 @@
     overflow-y: scroll;
     padding: 1rem;
     &__date {
-      margin-bottom: 1rem;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem;
       font-size: 0.8rem;
       color: rgb(180, 180, 180);
       font-style: italic;
-      background-color: rgb(230, 230, 230);
     }
     &__title {
       font-size: 1.5rem;

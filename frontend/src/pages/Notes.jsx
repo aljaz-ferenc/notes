@@ -5,6 +5,7 @@ import SingleNote from "../components/notes/SingleNote";
 import { Outlet, useParams } from "react-router";
 import { getNotesByUser } from "../api";
 import Search from "../components/notes/Search";
+import toast from 'react-hot-toast'
 
 export default function Notes() {
   const { userId } = useParams();
@@ -23,7 +24,7 @@ export default function Notes() {
           throw new Error(res.message);
         }
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => toast.error(err.message));
   }, [user.notes, userId]);
 
   return (

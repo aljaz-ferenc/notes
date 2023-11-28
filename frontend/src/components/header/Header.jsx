@@ -27,7 +27,7 @@ export default function Header() {
           throw new Error(res.message);
         }
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => toast.error(err.message));
   }
 
   function handleLogout() {
