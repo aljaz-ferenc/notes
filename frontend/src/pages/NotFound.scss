@@ -1,48 +1,57 @@
-.not-found{
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    margin-top: 2rem;
-    max-width: 90%;
-    margin: 2rem auto;
-    h1{
-        font-size: 5rem;
-    }
-    p{
-        font-size: 2rem;
-    }
-    h2{
-        font-size: 1rem;
-    }
+@import "../sass/variables.scss";
+
+.not-found-container {
+  background-color: $--color-bg;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 2rem;
 }
 
-@media(max-width: 768px){
-    .not-found{
-        h1{
-            font-size: 3rem;
-        }
-        p{
-            font-size: 1.5rem;
-        }
-        h2{
-            font-size: 1rem;
-        }
-    } 
+.not-found {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  max-width: 90%;
+  margin: 2rem auto;
+  color: white;
+  h1 {
+    font-size: 5rem;
+  }
+  p {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1rem;
+  }
 }
 
-@media(max-width: 480px){
-    .not-found{
-        h1{
-            font-size: 2rem;
-        }
-        p{
-            font-size: 1rem;
-        }
-        h2{
-            font-size: .8rem;
-        }
-    } 
+@media (max-width: 768px) {
+  .not-found {
+    h1 {
+      font-size: 3rem;
+    }
+    p {
+      font-size: 1.5rem;
+    }
+    h2 {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found {
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+    h2 {
+      font-size: 0.8rem;
+    }
+  }
 }

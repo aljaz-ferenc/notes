@@ -21,7 +21,7 @@ export default function RegisterForm({ setState }) {
     setIsFetching(true);
     try {
       const res = await registerUser(formData);
-      if (res.status === "success") navigate(`/user/${user.id}/notes`);
+      if (res.status === "success") navigate(`/user/${res.data._id}/notes`);
       else throw new Error(res.message);
     } catch (err) {
       if (err.message.includes("Email invalid")) err.message = "Email invalid";
