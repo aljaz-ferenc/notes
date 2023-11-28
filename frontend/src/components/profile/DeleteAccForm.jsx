@@ -13,11 +13,12 @@ export default function DeleteAccForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [isSubmitting, setIsSubmittint] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useUserContext();
   const navigate = useNavigate();
 
   function handleDeleteAccount(formData) {
+    setIsSubmitting(true)
     deleteAccount({ userId: user.id, ...formData })
       .then((res) => {
         if (res.status === "success") {
@@ -26,7 +27,8 @@ export default function DeleteAccForm() {
           throw new Error(res.message);
         }
       })
-      .catch((err) => toast.error(err.message));
+      .catch((err) => toast.error(err.message))
+      .finally(() => setIsSubmitting(false))
   }
 
   return (

@@ -15,7 +15,6 @@ const authRouter = require('./routes/authRoute.js')
 const noteRouter = require('./routes/noteRoute.js')
 const authController = require('./controllers/authController.js')
 
-
 process.on('uncaughtException', (err) => {
     console.log('Uncaught exception: ', err.message)
 })
