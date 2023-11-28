@@ -13,6 +13,7 @@ export default function LoginForm({ setState }) {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
   const navigate = useNavigate();
 
@@ -30,8 +31,50 @@ export default function LoginForm({ setState }) {
     }
   }
 
+  function setTestUserValues(user) {
+    switch (user) {
+      case "user1":
+        setValue("email", "user1@email.com");
+        setValue("password", "user123");
+        break;
+      case "user2":
+        setValue("email", "user2@email.com");
+        setValue("password", "user123");
+        break;
+      case "admin":
+        setValue("email", "admin@email.com");
+        setValue("password", "admin123");
+        break;
+    }
+  }
+
   return (
     <div className="login-form-container">
+      <div className="test-users">
+        <div>
+          <Button
+            backgroundColorHover="orange"
+            backgroundColor="orange"
+            onClick={() => setTestUserValues("user1")}
+          >
+            User 1
+          </Button>
+          <Button
+            backgroundColorHover="orange"
+            backgroundColor="orange"
+            onClick={() => setTestUserValues("user2")}
+          >
+            User 2
+          </Button>
+          <Button
+            backgroundColorHover="orange"
+            backgroundColor="orange"
+            onClick={() => setTestUserValues("admin")}
+          >
+            Admin
+          </Button>
+        </div>
+      </div>
       <form className="login-form" onSubmit={handleSubmit(submitForm)}>
         <h1>Login</h1>
         <div className="input-group">

@@ -1,7 +1,27 @@
 @import "../../sass/mixins.scss";
 
 .login-form-container {
+  .test-users {
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      padding: 0.3rem;
+      button {
+        font-size: 0.8rem;
+        width: max-content;
+        color: $--color-text !important;
+      }
+    }
+  }
   .login-form {
     @include form;
+  }
+}
+
+@media (max-width: 425px) {
+  .login-form {
+    padding: 1rem !important;
+    gap: 2rem !important;
   }
 }

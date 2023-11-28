@@ -5,3 +5,10 @@
     @include form;
   }
 }
+
+@media (max-width: 425px) {
+  .register-form {
+    padding: 1rem !important;
+    gap: 2rem !important;
+  }
+}
